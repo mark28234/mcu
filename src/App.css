@@ -1,0 +1,25 @@
+.App {
+  padding: 15px;
+}
+
+.App-Header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.Characters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.App-Loader {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
