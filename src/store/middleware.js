@@ -9,7 +9,7 @@ const fetchCharacters = ({ getState, dispatch }) => (next) => (action) => {
       url = `${url}&nameStartsWith=${action.query}`;
     }
 
-    fetch(url, { referrer: "developer.marvel.com" })
+    fetch(url)
       .then((res) => res.json())
       .then((res) => {
         dispatch({
