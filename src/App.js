@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
-
-import Character from "./components/character/Character";
-import SearchBox from "./components/search-box/SearchBox";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { store } from "./store/store";
 import { actionTypes } from "./store/action";
 
-function App() {
+import CharacterBrowser from "./components/character-browser/CharacterBrowser";
+
+import "./App.css";
+import CharacterInfo from "./components/character-info/CharacterInfo";
+
+function onSearch(query) {
+  store.dispatch({ type: actionTypes.FETCH_CHARACTERS, query });
+}
+
+export default function App() {
   const [state, setState] = useState(store.getState());
+
   useEffect(() => {
     store.subscribe(() => {
       setState(store.getState());
@@ -18,34 +25,24 @@ function App() {
   return (
     <div className="App">
       <div className="App-Header">
-        <div>
-          <h1>Marvel Characters</h1>
-        </div>
-        <div>
-          <SearchBox
-            onSearch={(query) => {
-              store.dispatch({ type: actionTypes.FETCH_CHARACTERS, query });
-            }}
-          />
-        </div>
+        <h1>Marvel Characters</h1>
       </div>
       <div className="App-Content">
-        {state.loading && (
-          <div className="App-Loader">
-            <h4>Loading Characters</h4>
-          </div>
-        )}
-
-        <div className="Characters">
-          {!state.loading &&
-            state.characters &&
-            state.characters.map((character) => (
-              <Character key={character.id} {...character} />
-            ))}
-        </div>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/character/:id">
+              <CharacterInfo character={state.currentCharacter} />
+            </Route>
+            <Route path="/">
+              <CharacterBrowser
+                loading={state.loading}
+                characters={state.characters}
+                onSearch={onSearch}
+              />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </div>
     </div>
   );
 }
-
-export default App;

@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: false,
   characters: [],
+  currentCharacter: {},
 };
 
 const storeEnhancers = applyMiddleware(...middlewares);

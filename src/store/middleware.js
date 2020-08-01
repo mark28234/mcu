@@ -24,4 +24,24 @@ const fetchCharacters = ({ getState, dispatch }) => (next) => (action) => {
   next(action);
 };
 
-export default [fetchCharacters];
+const fetchCharacter = ({ getState, dispatch }) => (next) => (action) => {
+  if (action.type === actionTypes.FETCH_CHARACTER) {
+    let url = `https://gateway.marvel.com:443/v1/public/characters/${action.id}?apikey=4ade67d1009a7f988e0707ceacbf127e`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        let character = res.data && res.data.results && res.data.results[0];
+        dispatch({
+          type: actionTypes.FETCH_CHARACTER_SUCCESS,
+          data: character,
+        });
+      })
+      .catch((error) => {
+        dispatch({ type: actionTypes.FETCH_CHARACTER_ERROR });
+      });
+  }
+  next(action);
+};
+
+export default [fetchCharacters, fetchCharacter];
